@@ -57,6 +57,8 @@ local function makeConsumer(contextKey, defaultValue)
 
 		return renderer(providedValue)
 	end
+
+	return consumerComponent
 end
 
 return makeConsumer

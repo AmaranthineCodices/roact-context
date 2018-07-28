@@ -20,6 +20,8 @@ local function makeProvider(contextKey)
 	function providerComponent:render()
 		return Roact.oneChild(self.props[Roact.Children])
 	end
+
+	return providerComponent
 end
 
 return makeProvider
