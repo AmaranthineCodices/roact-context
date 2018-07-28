@@ -7,6 +7,8 @@ local function makeConsumer(contextKey, defaultValue)
 		self.state = {
 			contextValue = self:getProvidedValue()
 		}
+
+		self:connectProvider()
 	end
 
 	function consumerComponent:getProvider()
@@ -15,29 +17,34 @@ local function makeConsumer(contextKey, defaultValue)
 		return provider
 	end
 
-	function consumerComponent:didUpdate()
+	function consumerComponent:connectProvider()
 		local currentProvider = self._provider
 		local provider = self:getProvider()
 
 		if provider == currentProvider then
 			return
-		else
-			self._providerConnection:disconnect()
+		elseif provider ~= nil then
+			self._provider = provider
+
+			if self._providerConnection ~= nil then
+				self._providerConnection:disconnect()
+			end
+
 			self._providerConnection = provider.changed:connect(function(newValue)
 				self:setState({
 					contextValue = self:getProvidedValue()
 				})
 			end)
-
-			self:setState({
-				contextValue = self:getProvidedValue()
-			})
 		end
 	end
 
+	function consumerComponent:willUpdate()
+		self:connectProvider()
+	end
+
 	function consumerComponent:willUnmount()
-		if self._providerConnection then
-			self._providerConnection:Disconnect()
+		if self._providerConnection ~= nil then
+			self._providerConnection:disconnect()
 		end
 	end
 
