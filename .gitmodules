@@ -1,3 +1,6 @@
 [submodule "lib/Roact"]
 	path = lib/Roact
 	url = https://github.com/Roblox/Roact
+[submodule "lib/TestEZ"]
+	path = lib/TestEZ
+	url = https://github.com/Roblox/TestEZ
